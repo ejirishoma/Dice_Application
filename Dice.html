@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html><body>
+    <style>
+        button{
+            width:50px;
+            height:50px;
+        }
+    </style>
+    <div>Hello WebDice!<br></div>
+    <div>このWebアプリはTRPGのために作ったWebアプリです。「振りたいダイスの数」「D」「ダイスの目の数」で分けて入力してください。振ったダイスの出た目の合計を表示します。<br>例）2D6,1D100,3D20</div>
+    <input /><br>
+    <script>
+        function getRandomInt(min,max){
+            min=Math.ceil(min);
+            max=Math.floor(max);
+            return Math.floor(Math.random()*(max-min)+min);
+        }
+        function getDice(roll,eye){
+            let sum=0;
+            for(let i=0;i<roll;i++){
+                sum+=getRandomInt(1,eye);
+            }
+            return sum;
+        }
+        function update( _v ){
+            document.querySelector('input').value=_v
+        }
+        function append( _v ){
+            document.querySelector('input').value+=_v
+        }
+        function dice(){
+            var v=document.querySelector('input').value
+            var d=0;
+            for(let i=0;i<v.length;i++){
+                if(v.charAt(i)=="D"){
+                    d=i;
+                    break;
+                }
+            }
+            try{
+                const f=new Function('return '+getDice(v.substr(0, d),v.substr(d+1, v.length )))
+                update(f().toString())
+            } catch(_error){
+                update(_error)
+            }
+        }
+    </script>
+    <button onclick="append('1')">1</button>
+    <button onclick="append('2')">2</button>
+    <button onclick="append('3')">3</button><br>
+    <button onclick="append('4')">4</button>
+    <button onclick="append('5')">5</button>
+    <button onclick="append('6')">6</button><br>
+    <button onclick="append('7')">7</button>
+    <button onclick="append('8')">8</button>
+    <button onclick="append('9')">9</button><br>
+    <button onclick="append('0')">0</button>
+    <button onclick="append('D')">D</button>
+
+    <button onclick="dice()">Dice!</button>
+
+    <button onclick="update('')">CLR</button>
+</body></html>
